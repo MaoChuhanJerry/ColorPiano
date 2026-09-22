@@ -1,0 +1,45 @@
+# ColorPiano Pro -- runtime dependencies
+#
+#   pip install -r requirements.txt
+#
+# On Windows, and anywhere that the install path may contain non-ASCII
+# characters (a folder named like "副本"), prefer installing into a virtual
+# environment under a plain-ASCII path -- see README.md, "Install".  MediaPipe's
+# native file loader cannot open its own model file from a non-ASCII path; the
+# program works around this, but a clean path is better.
+
+# Camera capture and the on-screen overlay.
+# 4.8 or newer: the older 4.5.x wheels ship a conflicting numpy pin and lack
+# several of the drawing options the overlay uses.
+opencv-contrib-python>=4.8
+
+numpy>=1.24,<2.2
+
+# Audio playback.  Only the mixer is used, but the full package is the only
+# thing on PyPI.
+pygame>=2.1
+
+# Hand gestures.  Optional -- without it the program runs normally with the
+# keyboard and mouse, and says so at start-up.
+#
+# NOTE: a modern mediapipe wheel needs an extra 8 MB model download before hand
+# tracking works, because recent versions removed the self-contained
+# mp.solutions.hands API and ship no model file.  Verified on this machine:
+#
+#     mediapipe 0.10.21   has mp.solutions.hands   -> nothing else needed
+#     mediapipe 0.10.35   no  mp.solutions.hands   -> model download needed
+#     mediapipe 1.0.1     no  mp.solutions.hands   -> model download needed
+#
+# Both APIs are supported (see colorpiano/gestures.py).  scripts/setup.ps1 runs
+# the fetch for you; by hand it is:
+#
+#     pip install mediapipe
+#     python -m tools.fetch_model
+#
+# Nothing here pins a version: whichever wheel pip resolves will work, and the
+# self test states plainly which of the two paths it ended up on.
+mediapipe>=0.10 ; platform_system != "Darwin" or platform_machine == "arm64"
+
+# Optional: spoken colour names.  Without it the program falls back to the
+# texture-pattern earcons, which need nothing extra.
+# pyttsx3>=2.90

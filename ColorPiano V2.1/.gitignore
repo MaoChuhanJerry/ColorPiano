@@ -1,0 +1,27 @@
+# Virtual environments -- create with scripts/setup.ps1.
+# Keep them on an ASCII-only path: MediaPipe cannot load its hand model from a
+# path containing non-ASCII characters (see the README).
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Downloaded on demand by tools/fetch_model.py -- 8 MB, and not ours to
+# redistribute.
+assets/models/*.task
+
+# Recordings and snapshots produced by --record
+*.mp4
+*.avi
+out/
+
+# Editors
+.vscode/
+.idea/
+*.swp
